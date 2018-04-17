@@ -1,7 +1,7 @@
 FROM python:2.7
 
 WORKDIR /src
-ADD . /src
+ADD ./cms /src
 
 RUN set -ex \
     && curl -L https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -o /usr/local/bin/wait-for-it.sh \
