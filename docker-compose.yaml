@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: totallyHacked1337
+      POSTGRES_USER: django_cms
+      POSTGRES_DB: cms_db
+    volumes:
+      - ./backup:/backup
+    ports:
+      - '5432:5432'
+
+  imagehost_portal:
+    build: .
+    environment:
+      PORTAL_DEBUG: 'true'
+      POSTGRES_PASSWORD: totallyHacked1337
+      POSTGRES_USER: django_cms
+      POSTGRES_DB: cms_db
+      POSTGRES_HOST: postgres
+    volumes:
+      - .:/portal
+    ports:
+      - '8000:8000'
+    depends_on:
+      - postgres
+
+    working_dir: /portal
+
+    command: |
+      /usr/local/bin/wait-for-it.sh -t 60 postgres:5432 --
+        sh /portal/run.sh
